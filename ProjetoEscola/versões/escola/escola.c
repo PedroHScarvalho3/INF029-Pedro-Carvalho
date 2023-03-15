@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define limiteA 3
 #define limiteP 3
@@ -12,7 +13,7 @@ typedef struct birth{
 
 typedef struct ficha_pessoa{
   int matricula;
-  long int cpf;
+  int cpf;
   int ativo;
   char nome[50];
   char sexo;
@@ -73,6 +74,9 @@ int main(){
                 printf("digite o cpf do aluno %d:\n", i+1);
                 scanf("%d",&aluno[i].cpf);
                 getchar();
+                printf("digite o sexo do aluno %d:",i+1);
+                scanf("%c",&aluno[i].sexo);
+                getchar();
                 printf("digite a data de nascimento do aluno %d (no formato dd mm aa):\n", i+1);
                 scanf("%d",&aluno[i].data.dia);
                 getchar();
@@ -97,6 +101,7 @@ int main(){
                     printf("matricula do aluno %d: %d\n", i+1, aluno[i].matricula);
                     printf("nome do aluno %d: %s",i+1, aluno[i].nome);
                     printf("cpf do aluno %d: %d\n", i+1, aluno[i].cpf);
+                    printf("sexo do aluno %d: %c",i+1, aluno[i].sexo);
                     printf("data de nascimento do aluno %d: %d/%d/%d\n", i+1, aluno[i].data.dia, aluno[i].data.mes, aluno[i].data.ano);
                   }
                 }
