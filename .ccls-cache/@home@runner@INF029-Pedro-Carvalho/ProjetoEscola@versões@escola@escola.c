@@ -38,12 +38,12 @@ void menugeral (){
 
 void menualunos (){
   printf("*o que quer fazer nessa area?*\n");
-  printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nvoltar - 0\n");  
+  printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nver aniversariantes do mês - 5\nvoltar - 0\n");  
 }
 
 int main(){
 
-  int escolha,escolhaA,escolha3, i, sair=0,sairA=0,sairL, limiteD=3, quantA=0, matricula,achou=0, j;
+  int escolha,escolhaA,escolha3, i, sair=0,sairA=0,sairL, limiteD=3, quantA=0, matricula,achou=0, j,mes=0,mescount=0;
   dados aluno[limiteA], professor[limiteP];
   int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo;
   char nomenovo[50];
@@ -98,49 +98,27 @@ int main(){
               break;
             }
             case 2:{
-              while(sairL!=1){
-                menulistas ();
-                scanf("%d",&escolha3);
-                getchar();
-                switch(escolha3){
-                  case 1:{
-                  printf("*listar aluno*\n");
-                  if(quantA==0){
-                  printf("*sem cadastros disponiveis*\n");
-                  }
-                  else{
-                  for(i=0;i<quantA;i++){
-                    if(aluno[i].ativo){
-                      printf("matricula do aluno %d: %d\n", i+1, aluno[i].matricula);
-                      printf("nome do aluno %d: %s",i+1, aluno[i].nome);
-                      printf("cpf do aluno %d: %d\n", i+1, aluno[i].cpf);
-                      printf("sexo do aluno %d: %c\n",i+1, aluno[i].sexo);
-                      printf("data de nascimento do aluno %d: %d/%d/%d\n", i+1, aluno[i].data.dia, aluno[i].data.mes, aluno[i].data.ano);
-                      }
-                    }
-                  }
-                  break;
-                  }
-                  case 2:{
-                    printf("*listar aluno por nome*\n");
-                    break;
-                  }
-                  case 3:{
-                    printf("&listar alunos por nascimento*\n");
-                    break;
-                  }
-                  case 0:{
-                    printf("*voltar*\n");
-                    sairL=1;
-                    break;
-                  }
-                  default:{
-                    invalido();
-                    break;
+              printf("*listar aluno*\n");
+              if(quantA==0){
+                printf("*sem cadastros disponiveis*\n");
+              }
+              else{
+                for(i=0;i<quantA;i++){
+                  if(aluno[i].ativo){
+                    printf("matricula do aluno %d: %d\n", i+1, aluno[i].matricula);
+                    printf("nome do aluno %d: %s",i+1, aluno[i].nome);
+                    printf("cpf do aluno %d: %d\n", i+1, aluno[i].cpf);
+                    printf("sexo do aluno %d: %c\n",i+1, aluno[i].sexo);
+                    printf("data de nascimento do aluno %d: %d/%d/%d\n", i+1, aluno[i].data.dia, aluno[i].data.mes, aluno[i].data.ano);
+                    printf("\n");
                   }
                 }
+                for(i=0;i<quantA;i++){
+                  
+                }
               }
-            break;    
+                  
+              break;    
             }
             case 3:{
               printf("*atualizar aluno*\n");
@@ -219,6 +197,34 @@ int main(){
               else{
                 printf("*matricula inexistente, não pode ser excluida*");
               }
+              break;
+            }
+            case 5:{
+              printf("*aniversáriantes do mês*\n");
+              if(quantA==0){
+                printf("*sem cadastros disponiveis*\n");
+              }
+              else{
+                printf("digite em que mês estamos(1-12):\n");
+                scanf("%d",&mes);
+                getchar();
+                if((mes<0)||(mes>12)){
+                  printf("mes inválido");
+                }
+                else{
+                  printf("alunos do mês:\n");
+                  for(i=0;i<quantA;i++){
+                    if(aluno[i].data.mes==mes){
+                      printf("%d: %s\n",i+1,aluno[i].nome);
+                      mescount++;
+                    }
+                  }
+                  if(mescount<=0){
+                    printf("nenhum aluno faz aniversário esse mês\n");
+                  }
+                }
+              }
+              
               break;
             }
             default:{
