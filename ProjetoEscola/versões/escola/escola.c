@@ -4,6 +4,8 @@
 
 #define limiteA 3
 #define limiteP 3
+#define limiteD 3
+
 
 
 typedef struct birth{
@@ -21,6 +23,13 @@ typedef struct ficha_pessoa{
   data data;
 } dados;
 
+typedef struct disciplina{
+  char nome[20];
+  int code;
+  dados aluno[limiteA];
+  dados prodessor[limiteP];
+  int ativo;
+} dis;
 
 
 void invalido (){
@@ -38,19 +47,26 @@ void menugeral (){
 
 void menualunos (){
   printf("*o que quer fazer nessa area?*\n");
-  printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nver aniversariantes do mês - 5\nvoltar - 0\n");  
+  printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nver aniversariantes do mês - 5\nlistar por nome - 6\nvoltar - 0\n");  
+}
+void menudisc (){
+  printf("*o que quer fazer nessa area?*\n");
+  printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nmatricular alunos - 5\nmatricular professor - 6\nvoltar - 0\n");  
 }
 
 int main(){
 
-  int escolha,escolhaA,escolha3, i, sair=0,sairA=0,sairL, limiteD=3, quantA=0, matricula,achou=0, j,mes=0,mescount=0;
+  int escolha,escolhaA,escolhaD, i, sair=0,sairA=0,sairD=0, quantA=0,quantD=0, matricula, code,achou=0, j,mes=0,mescount=0;
   dados aluno[limiteA], professor[limiteP];
-  int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo;
-  char nomenovo[50];
+  dis dis[limiteD];
+  int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo, codenovo;
+  char nomenovo[50],nomedisnovo[20];
 
   while(sair!=1){
     menugeral();
     scanf("%d",&escolha);
+    sairA=0;
+    sairD=0;
 
     switch (escolha){
       case 0:{
@@ -227,6 +243,14 @@ int main(){
               
               break;
             }
+            case 6:{
+              
+              break;
+            }
+            case 7:{
+              
+              break;
+            }
             default:{
               invalido();
               break;
@@ -241,6 +265,136 @@ int main(){
       }
       case 3:{
         printf("*menu disciplina*\n");
+        while(sairD!=1){
+          menudisc();
+          scanf("%d",&escolhaD);
+          switch(escolhaD){
+            case 0:{
+              sairD=1;
+              break;
+            }
+            case 1:{
+              printf("*cadastrar disciplina*\n");
+              for(i=0;i<limiteD;i++){
+                
+                printf("digite o codigo da disciplina %d:\n", i+1);
+                scanf("%d",&dis[i].code);
+                getchar();
+                printf("digite o nome da disciplina %d:\n", i+1);
+                fgets(dis[i].nome,20,stdin);
+                getchar();
+                
+                dis[i].ativo=1;
+                quantD++;
+                
+              }
+              break;
+            }
+            case 2:{
+              printf("*listar disciplina*\n");
+              if(quantD==0){
+                printf("*sem disciplinas disponiveis*\n");
+              }
+              else{
+                for(i=0;i<quantD;i++){
+                  if(dis[i].ativo){
+                    printf("codigo da disciplina %d: %d\n", i+1, dis[i].code);
+                    printf("nome da disciplina %d: %s",i+1, dis[i].nome);
+                    printf("\n");
+                  }
+                }
+              }
+              break;
+            }
+            case 3:{
+              printf("*atualizar disciplina*\n");
+              printf("*digite o codigo da disciplina que quer atualizar*:\n");
+              scanf("%d",&code);
+              int achou=0;
+              if(code<0){
+                printf("matricula inválida\n");
+              }
+              else{
+                for(i=0;i<limiteD;i++){
+                if(code==dis[i].code && dis[i].ativo){
+                  printf("*digite os novos dados\n*");
+                  printf("qual será o novo código?\n");
+                  scanf("%d",&codenovo);
+                  getchar();
+                  printf("qual será o novo nome?\n");
+                  fgets(nomedisnovo,20,stdin);
+                  getchar();
+                  dis[i].code=codenovo;
+                  strcpy(dis[i].nome,nomedisnovo);
+                  getchar();
+                  achou=1;
+                  break;
+                  }
+                }
+              }
+              
+              if(achou){
+                printf("*disciplina atualizada*\n");
+              }
+              else{
+                printf("*disciplina inexistente, não pode ser atualizada*");
+              }
+              break;
+            }
+            case 4:{
+              printf("*excluir disciplina*\n");
+              printf("*digite o codigo da disciplina que quer excluir*:\n");
+              scanf("%d",&code);
+              for(i=0;i<limiteD;i++){
+                if(code==dis[i].code){
+                  dis[i].ativo=-1;
+                  for(j=i;j<quantD-1;j++){
+                    dis[j].code=dis[j+1].code;
+                    strcpy(dis[j].nome,dis[j+1].nome);
+                  }
+                  quantD--;
+                  achou=1;
+                  break;
+                }
+              }
+              if(achou){
+                printf("*disciplina excluido*\n");
+              }
+              else{
+                printf("*disciplina inexistente, não pode ser excluida*\n");
+              }
+              break;
+            }
+            case 5:{
+              printf("*matricular alunos na disciplina*\n");
+              printf("digite a matricula do aluno que você quer matricular em uma disciplina\n");
+              scanf("%d",&matricula);
+              getchar();
+              printf("digite a disciplina na qual você quer matricular o aluno\n");
+              scanf("%d",&code);
+              for(i=0;i<quantD;i++){
+                if(code==dis[i].code){
+                  for(j=0;j<quantA;j++){
+                    strcpy(dis[i].aluno[i].nome,aluno[j].nome);
+                    dis[i].aluno[i].matricula=aluno[j].matricula;
+                    dis[i].aluno[i].cpf=aluno[j].cpf;
+                    dis[i].aluno[i].data.dia=aluno[j].data.dia;
+                    dis[i].aluno[i].data.mes=aluno[j].data.mes;
+                    dis[i].aluno[i].data.ano=aluno[j].data.ano;
+                  }
+                }
+              }
+              break;
+            }
+            case 6:{
+              break;
+            }
+            default:{
+              invalido();
+              break;
+            }
+          }
+        }
         break;
       }
       default:{
