@@ -8,6 +8,9 @@
 
 
 
+
+
+
 typedef struct birth{
   int dia;
   int mes;
@@ -29,6 +32,7 @@ typedef struct disciplina{
   dados aluno[limiteA];
   dados prodessor[limiteP];
   int ativo;
+  int quantAD;
 } dis;
 
 
@@ -300,6 +304,9 @@ int main(){
                   if(dis[i].ativo){
                     printf("codigo da disciplina %d: %d\n", i+1, dis[i].code);
                     printf("nome da disciplina %d: %s",i+1, dis[i].nome);
+                    for(j=0;j<quantAD;j++){
+                      printf("aluno %d: %s\n",j+1,dis[i].aluno[j].nome);
+                    }
                     printf("\n");
                   }
                 }
@@ -375,12 +382,15 @@ int main(){
               for(i=0;i<quantD;i++){
                 if(code==dis[i].code){
                   for(j=0;j<quantA;j++){
-                    strcpy(dis[i].aluno[i].nome,aluno[j].nome);
-                    dis[i].aluno[i].matricula=aluno[j].matricula;
-                    dis[i].aluno[i].cpf=aluno[j].cpf;
-                    dis[i].aluno[i].data.dia=aluno[j].data.dia;
-                    dis[i].aluno[i].data.mes=aluno[j].data.mes;
-                    dis[i].aluno[i].data.ano=aluno[j].data.ano;
+                    if(matricula==aluno[j].matricula){
+                      strcpy(dis[dis[i].quantAD].aluno[i].nome,aluno[j].nome);
+                      dis[i].aluno[dis[i].quantAD].matricula=aluno[j].matricula;
+                      dis[i].aluno[dis[i].quantAD].cpf=aluno[j].cpf;
+                      dis[i].aluno[dis[i].quantAD].data.dia=aluno[j].data.dia;
+                      dis[i].aluno[dis[i].quantAD].data.mes=aluno[j].data.mes;
+                      dis[i].aluno[dis[i].quantAD].data.ano=aluno[j].data.ano;
+                      dis[i].quantAD++;
+                    }
                   }
                 }
               }
