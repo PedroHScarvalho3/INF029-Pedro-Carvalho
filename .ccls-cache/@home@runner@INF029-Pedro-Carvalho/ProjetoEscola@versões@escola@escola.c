@@ -48,23 +48,21 @@ void menualunos() {
   printf("*o que quer fazer nessa area?*\n");
   printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nver "
          "aniversariantes do mês - 5\nlistar por nome - 6\nlistar por sexo - "
-         "7\nvoltar - 0\n");
+         "7\nbuscar aluno - 8\nvoltar - 0\n");
 }
 void menudisc() {
   printf("*o que quer fazer nessa area?*\n");
   printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nmatricular "
-         "alunos - 5\nmatricular professor - 6\nvoltar - 0\n");
+         "alunos - 5\nmatricular professor - 6\nexcluir aluno da disciplina - 7\nexcluir professor da disciplina - 8\nlistar disciplinas com 40 vagas - 9\nvoltar - 0\n");
 }
 
 int main() {
 
-  int escolha, escolhaA, escolhaD, i, sair = 0, sairA = 0, sairD = 0,
-                                      quantA = 0, quantD = 0, matricula, code,
-                                      achou = 0, j, mes = 0, mescount = 0;
+  int escolha, escolhaA, escolhaD, i, sair = 0, sairA = 0, sairD = 0,quantA = 0, quantD = 0, matricula, code,achou = 0, j,k, mes = 0, mescount = 0,cont;
   dados aluno[limiteA], professor[limiteP],copia;
   dis dis[limiteD];
   int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo, codenovo;
-  char nomenovo[50], nomedisnovo[20], sexo, escolhaS;
+  char nomenovo[50], nomedisnovo[20], sexo, escolhaS,str[50],*ponteiro;
 
   while (sair != 1) {
     menugeral();
@@ -297,6 +295,28 @@ int main() {
           }
           break;
         }
+        case 8:{
+          printf("*buscar aluno*\n");
+          printf("digite o que quer procurar\n");
+          fgets(str,50,stdin);
+          getchar();
+          for(i=0;i<quantA;i++){
+            cont=0;
+            for(j=0;j<strlen(aluno[i].nome);j++){
+              for(k=0;k<strlen(str);k++) {
+                setbuf(stdin, 0);
+                if(str[k] == aluno[i].nome[j]) {
+                  cont++;
+                  break;
+                }
+              }
+            }
+            if(cont > 2) { 
+              printf("- %s\n", aluno[i].nome);
+            }
+          }
+          break;
+        }
         default: {
           invalido();
           break;
@@ -329,7 +349,6 @@ int main() {
             printf("digite o nome da disciplina %d:\n", i + 1);
             fgets(dis[i].nome, 20, stdin);
             getchar();
-
             dis[i].ativo = 1;
             quantD++;
           }
@@ -345,7 +364,7 @@ int main() {
                 printf("codigo da disciplina %d: %d\n", i + 1, dis[i].code);
                 printf("nome da disciplina %d: %s", i + 1, dis[i].nome);
                 for (j = 0; j < dis[i].quantAD; j++) {
-                  if (dis[i].ativo != 0) {
+                  if (dis[i].aluno[j].ativo != 0) {
                     printf("aluno %d: %s\n", j + 1, dis[i].aluno[j].nome);
                   }
                 }
@@ -427,6 +446,7 @@ int main() {
                   strcpy(dis[i].aluno[dis[i].quantAD].nome, aluno[j].nome);
                   dis[i].aluno[dis[i].quantAD].ativo++;
                   dis[i].quantAD++;
+                  
                 }
               }
             }
@@ -436,6 +456,18 @@ int main() {
         case 6: {
           break;
         }
+        case 7: {
+          printf("*excluir aluno da disciplina*\n");
+          
+          break;
+        }
+        case 8: {
+          break;
+        }
+          case 9:{
+            
+            break;
+          }
         default: {
           invalido();
           break;
