@@ -61,7 +61,7 @@ int main() {
   int escolha, escolhaA, escolhaD, i, sair = 0, sairA = 0, sairD = 0,
                                       quantA = 0, quantD = 0, matricula, code,
                                       achou = 0, j, mes = 0, mescount = 0;
-  dados aluno[limiteA], professor[limiteP];
+  dados aluno[limiteA], professor[limiteP],copia;
   dis dis[limiteD];
   int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo, codenovo;
   char nomenovo[50], nomedisnovo[20], sexo, escolhaS;
@@ -251,7 +251,28 @@ int main() {
           break;
         }
         case 6: {
-
+          printf("*listagem de alunos por nome*");
+          for(j=0;j<quantA;j++){
+            for(i=quantA;i>0;i--){
+            copia=aluno[i-1];
+            if(strcmp(copia.nome,aluno[i].nome)>0){
+              aluno[i-1]=aluno[i];
+              aluno[i]=copia;
+              }
+            }
+          }
+          for (i = 0; i < quantA; i++) {
+              if (aluno[i].ativo) {
+                printf("matricula do aluno %d: %d\n", i + 1,
+                       aluno[i].matricula);
+                printf("nome do aluno %d: %s", i + 1, aluno[i].nome);
+                printf("cpf do aluno %d: %d\n", i + 1, aluno[i].cpf);
+                printf("sexo do aluno %d: %c\n", i + 1, aluno[i].sexo);
+                printf("data de nascimento do aluno %d: %d/%d/%d\n", i + 1,
+                       aluno[i].data.dia, aluno[i].data.mes, aluno[i].data.ano);
+                printf("\n");
+              }
+            }
           break;
         }
         case 7: {
