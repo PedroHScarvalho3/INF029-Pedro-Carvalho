@@ -25,9 +25,10 @@ typedef struct disciplina {
   char nome[20];
   int code;
   dados aluno[limiteA];
-  dados prodessor[limiteP];
+  dados professor[limiteP];
   int ativo;
   int quantAD;
+  int quantPD;
 } dis;
 
 void invalido() {
@@ -75,6 +76,7 @@ int main() {
     scanf("%d", &escolha);
     sairA = 0;
     sairD = 0;
+    sairP = 0;
 
     switch (escolha) {
     case 0: {
@@ -255,7 +257,7 @@ int main() {
           break;
         }
         case 6: {
-          printf("*listagem de alunos por nome*");
+          printf("*listagem de alunos por nome*\n");
           for(j=0;j<quantA;j++){
             for(i=quantA;i>0;i--){
             copia=aluno[i-1];
@@ -505,7 +507,7 @@ int main() {
           break;
         }
         case 6: {
-          printf("*listagem de professor por nome*");
+          printf("*listagem de professor por nome*\n");
           for(j=0;j<quantP;j++){
             for(i=quantP;i>0;i--){
             copiaP=professor[i-1];
@@ -620,6 +622,11 @@ int main() {
                     printf("aluno %d: %s\n", j + 1, dis[i].aluno[j].nome);
                   }
                 }
+                for (j = 0; j < dis[i].quantPD; j++) {
+                  if (dis[i].professor[j].ativo != 0) {
+                    printf("professor %d: %s\n", j + 1, dis[i].professor[j].nome);
+                  }
+                }
                 printf("\n");
               }
             }
@@ -706,6 +713,25 @@ int main() {
           break;
         }
         case 6: {
+          printf("*matricular professores na disciplina*\n");
+          printf("digite a matricula do professor que você quer matricular em uma "
+                 "disciplina\n");
+          scanf("%d", &matricula);
+          getchar();
+          printf("digite a disciplina na qual você quer matricular o professor\n");
+          scanf("%d", &code);
+          for (i = 0; i < quantD; i++) {
+            if (code == dis[i].code) {
+              for (j = 0; j < quantP; j++) {
+                if (matricula == professor[j].matricula) {
+                  strcpy(dis[i].professor[dis[i].quantPD].nome, professor[j].nome);
+                  dis[i].professor[dis[i].quantPD].ativo++;
+                  dis[i].quantPD++;
+                  
+                }
+              }
+            }
+          }
           break;
         }
         case 7: {
