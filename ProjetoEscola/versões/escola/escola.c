@@ -50,7 +50,7 @@ void menualunos() {
          "aniversariantes do mês - 5\nlistar por nome - 6\nlistar por sexo - "
          "7\nbuscar aluno - 8\nvoltar - 0\n");
 }
-void menuaprof() {
+void menuprof() {
   printf("*o que quer fazer nessa area?*\n");
   printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nver "
          "aniversariantes do mês - 5\nlistar por nome - 6\nlistar por sexo - "
@@ -385,7 +385,7 @@ int main() {
           } else {
             for (i = 0; i < quantP; i++) {
               if (professor[i].ativo) {
-                printf("matricula do aluno %d: %d\n", i + 1,
+                printf("matricula do professor %d: %d\n", i + 1,
                        professor[i].matricula);
                 printf("nome do professor %d: %s", i + 1, professor[i].nome);
                 printf("cpf do professor %d: %d\n", i + 1, professor[i].cpf);
@@ -717,11 +717,6 @@ int main() {
           break;
         }
           case 9:{
-            for(i=0;i<quantD;i++) {
-              if(dis[i].alunoAD >= 40) {
-                printf("Disciplina %d: %s\n",i+1, dis[i].nome); 
-              }
-            }
             break;
           }
         default: {
