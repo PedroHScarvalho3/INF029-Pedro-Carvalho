@@ -29,6 +29,7 @@ typedef struct disciplina {
   int ativo;
   int quantAD;
   int quantPD;
+  int alunoscadastrados;
 } dis;
 
 void invalido() {
@@ -49,7 +50,7 @@ void menualunos() {
   printf("*o que quer fazer nessa area?*\n");
   printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nver "
          "aniversariantes do mês - 5\nlistar por nome - 6\nlistar por sexo - "
-         "7\nbuscar aluno - 8\nvoltar - 0\n");
+         "7\nbuscar aluno - 8\nlistar por data de nascimento - 9\nvoltar - 0\n");
 }
 void menuprof() {
   printf("*o que quer fazer nessa area?*\n");
@@ -325,6 +326,39 @@ int main() {
           }
           break;
         }
+          case 9:{
+            printf("*listagem de alunos por data de nascimento*\n");
+            for(i=0;i<quantA-1;i++){
+              if(aluno[i].data.ano>aluno[i+1].data.ano){
+                copia=aluno[i];
+                aluno[i]=aluno[i+1];
+                aluno[i+1]=copia; 
+              }
+              else if(aluno[i].data.mes>aluno[i+1].data.mes){
+                      copia=aluno[i];
+                      aluno[i]=aluno[i+1];
+                      aluno[i+1]=copia; 
+              }
+              else if(aluno[i].data.dia>aluno[i+1].data.dia){
+                      copia=aluno[i];
+                      aluno[i]=aluno[i+1];
+                      aluno[i+1]=copia; 
+              }
+            }
+            for (i = 0; i < quantA; i++) {
+              if (aluno[i].ativo) {
+                printf("matricula do aluno %d: %d\n", i + 1,
+                       aluno[i].matricula);
+                printf("nome do aluno %d: %s", i + 1, aluno[i].nome);
+                printf("cpf do aluno %d: %d\n", i + 1, aluno[i].cpf);
+                printf("sexo do aluno %d: %c\n", i + 1, aluno[i].sexo);
+                printf("data de nascimento do aluno %d: %d/%d/%d\n", i + 1,
+                       aluno[i].data.dia, aluno[i].data.mes, aluno[i].data.ano);
+                printf("\n");
+              }
+            }
+            break;
+          }
         default: {
           invalido();
           break;
@@ -604,6 +638,7 @@ int main() {
             fgets(dis[i].nome, 20, stdin);
             getchar();
             dis[i].ativo = 1;
+            dis[i].alunoscadastrados=0;
             quantD++;
           }
           break;
@@ -705,6 +740,7 @@ int main() {
                   strcpy(dis[i].aluno[dis[i].quantAD].nome, aluno[j].nome);
                   dis[i].aluno[dis[i].quantAD].ativo++;
                   dis[i].quantAD++;
+                  dis[i].alunoscadastrados++;
                   
                 }
               }
@@ -743,6 +779,17 @@ int main() {
           break;
         }
           case 9:{
+            printf("*listar disciplinas com 40+ alunos*\n");
+            for(i=0;i<quantD;i++){
+              if(dis[i].alunoscadastrados>=40){
+                printf("disciplina: %d: %s\n",i+1,dis[i].nome);
+                for (j = 0; j < dis[i].quantPD; j++) {
+                  if (dis[i].professor[j].ativo != 0) {
+                    printf("professor: %s\n", dis[i].professor[j].nome);
+                  }
+                }
+              }
+            }
             break;
           }
         default: {
