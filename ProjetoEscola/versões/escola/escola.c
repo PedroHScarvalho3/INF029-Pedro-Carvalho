@@ -24,6 +24,7 @@ typedef struct ficha_pessoa {
 typedef struct disciplina {
   char nome[20];
   int code;
+  int semestre;
   dados aluno[limiteA];
   dados professor[limiteP];
   int ativo;
@@ -69,7 +70,7 @@ int main() {
   int escolha, escolhaA, escolhaD,escolhaP, i, sair = 0, sairA = 0,sairP=0, sairD = 0,quantA = 0,quantP=0, quantD = 0, matricula, code,achou = 0, j,k, mes = 0, mescount = 0,cont;
   dados aluno[limiteA], professor[limiteP],copia,copiaP;
   dis dis[limiteD];
-  int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo, codenovo;
+  int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo, codenovo,semestrenovo;
   char nomenovo[50], nomedisnovo[20], sexo, escolhaS,str[50],*ponteiro;
 
   while (sair != 1) {
@@ -259,7 +260,7 @@ int main() {
         }
         case 6: {
           printf("*listagem de alunos por nome*\n");
-          for(j=0;j<quantA;j++){
+          for(j=0;j<quantA-1;j++){
             for(i=quantA;i>0;i--){
             copia=aluno[i-1];
             if(strcmp(copia.nome,aluno[i].nome)>0){
@@ -637,6 +638,9 @@ int main() {
             printf("digite o nome da disciplina %d:\n", i + 1);
             fgets(dis[i].nome, 20, stdin);
             getchar();
+            printf("digite o semestre da disciplina %d:\n", i + 1);
+            scanf("%d",&dis[i].semestre);
+            getchar();
             dis[i].ativo = 1;
             dis[i].alunoscadastrados=0;
             quantD++;
@@ -651,7 +655,8 @@ int main() {
             for (i = 0; i < quantD; i++) {
               if (dis[i].ativo) {
                 printf("codigo da disciplina %d: %d\n", i + 1, dis[i].code);
-                printf("nome da disciplina %d: %s", i + 1, dis[i].nome);
+                printf("nome da disciplina %d: %s\n", i + 1, dis[i].nome);
+                printf("semestre da disciplina %d: %d \n", i+1, dis[i].semestre);
                 for (j = 0; j < dis[i].quantAD; j++) {
                   if (dis[i].aluno[j].ativo != 0) {
                     printf("aluno %d: %s\n", j + 1, dis[i].aluno[j].nome);
@@ -685,9 +690,12 @@ int main() {
                 printf("qual sera o novo nome?\n");
                 fgets(nomedisnovo, 20, stdin);
                 getchar();
+                printf("qual será o novo semestre?\n");
+                scanf("%d",&semestrenovo);
                 dis[i].code = codenovo;
                 strcpy(dis[i].nome, nomedisnovo);
                 getchar();
+                dis[i].semestre=semestrenovo;
                 achou = 1;
                 break;
               }
@@ -711,6 +719,7 @@ int main() {
               for (j = i; j < quantD - 1; j++) {
                 dis[j].code = dis[j + 1].code;
                 strcpy(dis[j].nome, dis[j + 1].nome);
+                dis[j].semestre = dis[j+1].semestre;
                 dis[j].quantAD = dis[j + 1].quantAD;
               }
               quantD--;

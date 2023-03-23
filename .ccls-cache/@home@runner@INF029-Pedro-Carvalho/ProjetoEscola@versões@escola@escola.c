@@ -259,7 +259,7 @@ int main() {
         }
         case 6: {
           printf("*listagem de alunos por nome*\n");
-          for(j=0;j<quantA;j++){
+          for(j=0;j<quantA-1;j++){
             for(i=quantA;i>0;i--){
             copia=aluno[i-1];
             if(strcmp(copia.nome,aluno[i].nome)>0){
@@ -327,8 +327,8 @@ int main() {
           break;
         }
           case 9:{
-            printf("*listagem de alunos por data de nascimento*");
-            for(i=0;i<quantA;i++){
+            printf("*listagem de alunos por data de nascimento*\n");
+            for(i=0;i<quantA-1;i++){
               if(aluno[i].data.ano>aluno[i+1].data.ano){
                 copia=aluno[i];
                 aluno[i]=aluno[i+1];
