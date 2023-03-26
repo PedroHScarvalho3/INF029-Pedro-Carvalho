@@ -37,13 +37,23 @@ dados aluno[limiteA];
 dados professor[limiteP];
 dados copia;
 dados copiaP;
-int quantA = limiteA, mes=0, mescount=0;
+int quantA = limiteA,quantP = limiteP,quantD = limiteD, mes=0, mescount=0, matricula;
 char sexo, escolhaS;
+dis disc[limiteD];
+int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo, codenovo,semestrenovo;
+char nomenovo[50], nomedisnovo[20],str[50];
 
 void cadastroalunos();
+void cadastroprofessor();
 void listagemalunos(dados aluno[],int quantA);
+void listagemprofessor(dados professor[],int quantP);
 void aniversariantesA();
+void atualizaraluno();
 void listagemporsexoA();
+void listagemporsexoP();
+void listagemnascimentoA();
+void cadastrardisciplinas();
+void listardisciplinas();
 
 void menugeral();
 void menualunos();
@@ -53,11 +63,8 @@ void invalido();
 
 int main() {
 
-  int escolha, escolhaA, escolhaD,escolhaP, i, sair = 0, sairA = 0,sairP=0, sairD = 0,quantP=0, quantD = 0, matricula, code,achou = 0, j,k,cont;
-  dis dis[limiteD];
-  int matriculanova, dianovo, mesnovo, anonovo, cpfnovo, sexonovo, codenovo,semestrenovo;
-  char nomenovo[50], nomedisnovo[20],str[50];
-
+  int escolha, escolhaA, escolhaD,escolhaP, i, sair = 0, sairA = 0,sairP=0, sairD = 0,quantP=0, quantD = 0, code,achou = 0, j,k,cont;
+  
   while (sair != 1) {
     menugeral();
     scanf("%d", &escolha);
@@ -91,52 +98,7 @@ int main() {
           break;
         }
         case 3: {
-          printf("*atualizar aluno*\n");
-          printf("*digite a matricula do aluno que quer atualizar*:\n");
-          scanf("%d", &matricula);
-          int achou = 0;
-          if (matricula < 0) {
-            printf("matricula inválida\n");
-          } else {
-            for (i = 0; i < limiteA; i++) {
-              if (matricula == aluno[i].matricula && aluno[i].ativo) {
-                printf("*digite os novos dados\n*");
-                printf("qual será a nova matricula?\n");
-                scanf("%d", &matriculanova);
-                getchar();
-                printf("qual será o novo nome?");
-                fgets(nomenovo, 50, stdin);
-                getchar();
-                printf("qual será o novo cpf?\n");
-                scanf("%d", &cpfnovo);
-                getchar();
-                printf("qual será a nova data de nascimento? (no formato dd mm "
-                       "aa):\n");
-                scanf("%d", &dianovo);
-                getchar();
-                scanf("%d", &mesnovo);
-                getchar();
-                scanf("%d", &anonovo);
-                getchar();
-                aluno[i].matricula = matriculanova;
-                strcpy(aluno[i].nome, nomenovo);
-                getchar();
-                aluno[i].cpf = cpfnovo;
-                aluno[i].data.dia = dianovo;
-                aluno[i].data.mes = mesnovo;
-                aluno[i].data.ano = anonovo;
-
-                achou = 1;
-                break;
-              }
-            }
-          }
-
-          if (achou) {
-            printf("*aluno atualizado*\n");
-          } else {
-            printf("*matricula inexistente, não pode ser excluida*");
-          }
+          atualizaraluno();
           break;
         }
         case 4: {
@@ -168,29 +130,7 @@ int main() {
           break;
         }
         case 5: {
-          printf("*aniversáriantes do mês*\n");
-          if (quantA == 0) {
-            printf("*sem cadastros disponiveis*\n");
-          } else {
-            printf("digite em que mês estamos(1-12):\n");
-            scanf("%d", &mes);
-            getchar();
-            if ((mes < 0) || (mes > 12)) {
-              printf("mes inválido");
-            } else {
-              printf("alunos do mês:\n");
-              for (i = 0; i < quantA; i++) {
-                if (aluno[i].data.mes == mes) {
-                  printf("%d: %s\n", i + 1, aluno[i].nome);
-                  mescount++;
-                }
-              }
-              if (mescount <= 0) {
-                printf("nenhum aluno faz aniversário esse mês\n");
-              }
-            }
-          }
-
+          aniversariantesA();
           break;
         }
         case 6: {
@@ -204,40 +144,11 @@ int main() {
               }
             }
           }
-          for (i = 0; i < quantA; i++) {
-              if (aluno[i].ativo) {
-                printf("matricula do aluno %d: %d\n", i + 1,
-                       aluno[i].matricula);
-                printf("nome do aluno %d: %s", i + 1, aluno[i].nome);
-                printf("cpf do aluno %d: %d\n", i + 1, aluno[i].cpf);
-                printf("sexo do aluno %d: %c\n", i + 1, aluno[i].sexo);
-                printf("data de nascimento do aluno %d: %d/%d/%d\n", i + 1,
-                       aluno[i].data.dia, aluno[i].data.mes, aluno[i].data.ano);
-                printf("\n");
-              }
-            }
+          listagemalunos(aluno,quantA);
           break;
         }
         case 7: {
-          printf("*listagem por sexo*\n");
-          printf("qual sexo voce quer listar?(m=masculino/f=feminino)\n");
-          scanf("%c", &escolhaS);
-          if (escolhaS == 'm') {
-            printf("*lista dos masculinos*\n");
-            for (i = 0; i < quantA; i++) {
-              if (aluno[i].sexo == escolhaS) {
-                printf("aluno %d: %s\n", i + 1, aluno[i].nome);
-              }
-            }
-          }
-          if (escolhaS == 'f') {
-            printf("*lista dos femininos*\n");
-            for (i = 0; i < quantA; i++) {
-              if (aluno[i].sexo == escolhaS) {
-                printf("aluna %d: %s\n", i + 1, aluno[i].nome);
-              }
-            }
-          }
+          listagemporsexoA();
           break;
         }
         case 8:{
@@ -281,18 +192,7 @@ int main() {
                       aluno[i+1]=copia; 
               }
             }
-            for (i = 0; i < quantA; i++) {
-              if (aluno[i].ativo) {
-                printf("matricula do aluno %d: %d\n", i + 1,
-                       aluno[i].matricula);
-                printf("nome do aluno %d: %s", i + 1, aluno[i].nome);
-                printf("cpf do aluno %d: %d\n", i + 1, aluno[i].cpf);
-                printf("sexo do aluno %d: %c\n", i + 1, aluno[i].sexo);
-                printf("data de nascimento do aluno %d: %d/%d/%d\n", i + 1,
-                       aluno[i].data.dia, aluno[i].data.mes, aluno[i].data.ano);
-                printf("\n");
-              }
-            }
+            listagemalunos(aluno,quantA);
             break;
           }
         default: {
@@ -315,62 +215,11 @@ int main() {
           break;
         }
         case 1: {
-          printf("*cadastrar professor*\n\n");
-          for (i = 0; i < limiteP; i++) {
-
-            printf("digite a matricula do professor %d:\n", i + 1);
-            scanf("%d", &professor[i].matricula);
-            getchar();
-            printf("digite o nome do professor %d:\n", i + 1);
-            fgets(professor[i].nome, 50, stdin);
-            getchar();
-            printf("digite o cpf do professor %d:\n", i + 1);
-            scanf("%d", &professor[i].cpf);
-            getchar();
-            printf("digite o sexo do professor %d(m=masculino/f=feminino):\n",
-                   i + 1);
-            scanf("%c", &sexo);
-            getchar();
-            if ((sexo == 'm') || (sexo == 'f')) {
-              professor[i].sexo = sexo;
-            } else {
-              printf("sexo invalido!");
-            }
-            printf("digite a data de nascimento do professor %d (no formato dd mm "
-                   "aa):\n",
-                   i + 1);
-            scanf("%d", &professor[i].data.dia);
-            getchar();
-            scanf("%d", &professor[i].data.mes);
-            getchar();
-            scanf("%d", &professor[i].data.ano);
-            getchar();
-            professor[i].ativo = 1;
-            quantP++;
-          }
+          cadastroprofessor();
           break;
         }
         case 2: {
-          printf("*listar professor*\n");
-          if (quantP == 0) {
-            printf("*sem cadastros disponiveis*\n");
-          } else {
-            for (i = 0; i < quantP; i++) {
-              if (professor[i].ativo) {
-                printf("matricula do professor %d: %d\n", i + 1,
-                       professor[i].matricula);
-                printf("nome do professor %d: %s", i + 1, professor[i].nome);
-                printf("cpf do professor %d: %d\n", i + 1, professor[i].cpf);
-                printf("sexo do professor %d: %c\n", i + 1, professor[i].sexo);
-                printf("data de nascimento do professor %d: %d/%d/%d\n", i + 1,
-                       professor[i].data.dia, professor[i].data.mes, professor[i].data.ano);
-                printf("\n");
-              }
-            }
-            for (i = 0; i < quantP; i++) {
-            }
-          }
-
+          listagemprofessor(professor,quantP);
           break;
         }
         case 3: {
@@ -487,18 +336,7 @@ int main() {
               }
             }
           }
-          for (i = 0; i < quantP; i++) {
-              if (professor[i].ativo) {
-                printf("matricula do professor %d: %d\n", i + 1,
-                       professor[i].matricula);
-                printf("nome do professor %d: %s", i + 1, professor[i].nome);
-                printf("cpf do professor %d: %d\n", i + 1, professor[i].cpf);
-                printf("sexo do professor %d: %c\n", i + 1, professor[i].sexo);
-                printf("data de nascimento do professor %d: %d/%d/%d\n", i + 1,
-                       professor[i].data.dia, professor[i].data.mes, professor[i].data.ano);
-                printf("\n");
-              }
-            }
+          listagemprofessor(professor,quantP);
           break;
         }
         case 7: {
@@ -564,48 +402,11 @@ int main() {
           break;
         }
         case 1: {
-          printf("*cadastrar disciplina*\n");
-          for (i = 0; i < limiteD; i++) {
-
-            printf("digite o codigo da disciplina %d:\n", i + 1);
-            scanf("%d", &dis[i].code);
-            getchar();
-            printf("digite o nome da disciplina %d:\n", i + 1);
-            fgets(dis[i].nome, 20, stdin);
-            getchar();
-            printf("digite o semestre da disciplina %d:\n", i + 1);
-            scanf("%d",&dis[i].semestre);
-            getchar();
-            dis[i].ativo = 1;
-            dis[i].alunoscadastrados=0;
-            quantD++;
-          }
+          cadastrardisciplinas();
           break;
         }
         case 2: {
-          printf("*listar disciplina*\n");
-          if (quantD == 0) {
-            printf("*sem disciplinas disponiveis*\n");
-          } else {
-            for (i = 0; i < quantD; i++) {
-              if (dis[i].ativo) {
-                printf("codigo da disciplina %d: %d\n", i + 1, dis[i].code);
-                printf("nome da disciplina %d: %s\n", i + 1, dis[i].nome);
-                printf("semestre da disciplina %d: %d \n", i+1, dis[i].semestre);
-                for (j = 0; j < dis[i].quantAD; j++) {
-                  if (dis[i].aluno[j].ativo != 0) {
-                    printf("aluno %d: %s\n", j + 1, dis[i].aluno[j].nome);
-                  }
-                }
-                for (j = 0; j < dis[i].quantPD; j++) {
-                  if (dis[i].professor[j].ativo != 0) {
-                    printf("professor %d: %s\n", j + 1, dis[i].professor[j].nome);
-                  }
-                }
-                printf("\n");
-              }
-            }
-          }
+          listardisciplinas();
           break;
         }
         case 3: {
@@ -617,7 +418,7 @@ int main() {
             printf("matricula inválida\n");
           } else {
             for (i = 0; i < limiteD; i++) {
-              if (code == dis[i].code && dis[i].ativo) {
+              if (code == disc[i].code && disc[i].ativo) {
                 printf("*digite os novos dados\n*");
                 printf("qual sera o novo código?\n");
                 scanf("%d", &codenovo);
@@ -627,10 +428,10 @@ int main() {
                 getchar();
                 printf("qual será o novo semestre?\n");
                 scanf("%d",&semestrenovo);
-                dis[i].code = codenovo;
-                strcpy(dis[i].nome, nomedisnovo);
+                disc[i].code = codenovo;
+                strcpy(disc[i].nome, nomedisnovo);
                 getchar();
-                dis[i].semestre=semestrenovo;
+                disc[i].semestre=semestrenovo;
                 achou = 1;
                 break;
               }
@@ -649,13 +450,13 @@ int main() {
           printf("*digite o codigo da disciplina que quer excluir*:\n");
           scanf("%d", &code);
           for (i = 0; i < limiteD; i++) {
-            if (code == dis[i].code) {
-              dis[i].ativo = -1;
+            if (code == disc[i].code) {
+              disc[i].ativo = -1;
               for (j = i; j < quantD - 1; j++) {
-                dis[j].code = dis[j + 1].code;
-                strcpy(dis[j].nome, dis[j + 1].nome);
-                dis[j].semestre = dis[j+1].semestre;
-                dis[j].quantAD = dis[j + 1].quantAD;
+                disc[j].code = disc[j + 1].code;
+                strcpy(disc[j].nome, disc[j + 1].nome);
+                disc[j].semestre = disc[j+1].semestre;
+                disc[j].quantAD = disc[j + 1].quantAD;
               }
               quantD--;
               achou = 1;
@@ -678,13 +479,13 @@ int main() {
           printf("digite a disciplina na qual você quer matricular o aluno\n");
           scanf("%d", &code);
           for (i = 0; i < quantD; i++) {
-            if (code == dis[i].code) {
+            if (code == disc[i].code) {
               for (j = 0; j < quantA; j++) {
                 if (matricula == aluno[j].matricula) {
-                  strcpy(dis[i].aluno[dis[i].quantAD].nome, aluno[j].nome);
-                  dis[i].aluno[dis[i].quantAD].ativo++;
-                  dis[i].quantAD++;
-                  dis[i].alunoscadastrados++;
+                  strcpy(disc[i].aluno[disc[i].quantAD].nome, aluno[j].nome);
+                  disc[i].aluno[disc[i].quantAD].ativo++;
+                  disc[i].quantAD++;
+                  disc[i].alunoscadastrados++;
                   
                 }
               }
@@ -701,12 +502,12 @@ int main() {
           printf("digite a disciplina na qual você quer matricular o professor\n");
           scanf("%d", &code);
           for (i = 0; i < quantD; i++) {
-            if (code == dis[i].code) {
+            if (code == disc[i].code) {
               for (j = 0; j < quantP; j++) {
                 if (matricula == professor[j].matricula) {
-                  strcpy(dis[i].professor[dis[i].quantPD].nome, professor[j].nome);
-                  dis[i].professor[dis[i].quantPD].ativo++;
-                  dis[i].quantPD++;
+                  strcpy(disc[i].professor[disc[i].quantPD].nome, professor[j].nome);
+                  disc[i].professor[disc[i].quantPD].ativo++;
+                  disc[i].quantPD++;
                   
                 }
               }
@@ -717,25 +518,25 @@ int main() {
         case 7: {
           printf("*excluir alunos da disciplina*\n");
           for(i=0;i<limiteA;i++){
-            dis[i].aluno[dis[i].quantAD].ativo=0;
+            disc[i].aluno[disc[i].quantAD].ativo=0;
           }
           break;
         }
         case 8: {
           printf("*excluir professores da disciplina*\n");
           for(i=0;i<limiteA;i++){
-            dis[i].professor[dis[i].quantPD].ativo=0;
+            disc[i].professor[disc[i].quantPD].ativo=0;
           }
           break;
         }
           case 9:{
             printf("*listar disciplinas com 40+ alunos*\n");
             for(i=0;i<quantD;i++){
-              if(dis[i].alunoscadastrados>=40){
-                printf("disciplina: %d: %s\n",i+1,dis[i].nome);
-                for (j = 0; j < dis[i].quantPD; j++) {
-                  if (dis[i].professor[j].ativo != 0) {
-                    printf("professor: %s\n", dis[i].professor[j].nome);
+              if(disc[i].alunoscadastrados>=40){
+                printf("disciplina: %d: %s\n",i+1,disc[i].nome);
+                for (j = 0; j < disc[i].quantPD; j++) {
+                  if (disc[i].professor[j].ativo != 0) {
+                    printf("professor: %s\n", disc[i].professor[j].nome);
                   }
                 }
               }
@@ -792,6 +593,42 @@ void cadastroalunos() {
   }
 }
 
+void cadastroprofessor(){
+  printf("*cadastrar professor*\n\n");
+          for (int i = 0; i < limiteP; i++) {
+
+            printf("digite a matricula do professor %d:\n", i + 1);
+            scanf("%d", &professor[i].matricula);
+            getchar();
+            printf("digite o nome do professor %d:\n", i + 1);
+            fgets(professor[i].nome, 50, stdin);
+            getchar();
+            printf("digite o cpf do professor %d:\n", i + 1);
+            scanf("%d", &professor[i].cpf);
+            getchar();
+            printf("digite o sexo do professor %d(m=masculino/f=feminino):\n",
+                   i + 1);
+            scanf("%c", &sexo);
+            getchar();
+            if ((sexo == 'm') || (sexo == 'f')) {
+              professor[i].sexo = sexo;
+            } else {
+              printf("sexo invalido!");
+            }
+            printf("digite a data de nascimento do professor %d (no formato dd mm "
+                   "aa):\n",
+                   i + 1);
+            scanf("%d", &professor[i].data.dia);
+            getchar();
+            scanf("%d", &professor[i].data.mes);
+            getchar();
+            scanf("%d", &professor[i].data.ano);
+            getchar();
+            professor[i].ativo = 1;
+            quantP++;
+          }
+}
+
 void listagemalunos(dados aluno[],int quantA){
   printf("*listar aluno*\n");
           if (quantA == 0) {
@@ -812,6 +649,29 @@ void listagemalunos(dados aluno[],int quantA){
             for (int i = 0; i < quantA; i++) {
             }
           }
+}
+
+void listagemprofessor(dados professor[],int quantP){
+  printf("*listar professor*\n");
+          if (quantP == 0) {
+            printf("*sem cadastros disponiveis*\n");
+          } else {
+            for (int i = 0; i < quantP; i++) {
+              if (professor[i].ativo) {
+                printf("matricula do professor %d: %d\n", i + 1,
+                       professor[i].matricula);
+                printf("nome do professor %d: %s", i + 1, professor[i].nome);
+                printf("cpf do professor %d: %d\n", i + 1, professor[i].cpf);
+                printf("sexo do professor %d: %c\n", i + 1, professor[i].sexo);
+                printf("data de nascimento do professor %d: %d/%d/%d\n", i + 1,
+                       professor[i].data.dia, professor[i].data.mes, professor[i].data.ano);
+                printf("\n");
+              }
+            }
+            for (int i = 0; i < quantP; i++) {
+            }
+          }
+
 }
 
 void menugeral() {
@@ -838,7 +698,7 @@ void aniversariantesA(){
               printf("mes inválido");
             } else {
               printf("alunos do mês:\n");
-              for (i = 0; i < quantA; i++) {
+              for (int i = 0; i < quantA; i++) {
                 if (aluno[i].data.mes == mes) {
                   printf("%d: %s\n", i + 1, aluno[i].nome);
                   mescount++;
@@ -848,6 +708,55 @@ void aniversariantesA(){
                 printf("nenhum aluno faz aniversário esse mês\n");
               }
             }
+          }
+}
+
+void atualizaraluno(){
+  printf("*atualizar aluno*\n");
+          printf("*digite a matricula do aluno que quer atualizar*:\n");
+          scanf("%d", &matricula);
+          int achou = 0;
+          if (matricula < 0) {
+            printf("matricula inválida\n");
+          } else {
+            for (int i = 0; i < limiteA; i++) {
+              if (matricula == aluno[i].matricula && aluno[i].ativo) {
+                printf("*digite os novos dados\n*");
+                printf("qual será a nova matricula?\n");
+                scanf("%d", &matriculanova);
+                getchar();
+                printf("qual será o novo nome?");
+                fgets(nomenovo, 50, stdin);
+                getchar();
+                printf("qual será o novo cpf?\n");
+                scanf("%d", &cpfnovo);
+                getchar();
+                printf("qual será a nova data de nascimento? (no formato dd mm "
+                       "aa):\n");
+                scanf("%d", &dianovo);
+                getchar();
+                scanf("%d", &mesnovo);
+                getchar();
+                scanf("%d", &anonovo);
+                getchar();
+                aluno[i].matricula = matriculanova;
+                strcpy(aluno[i].nome, nomenovo);
+                getchar();
+                aluno[i].cpf = cpfnovo;
+                aluno[i].data.dia = dianovo;
+                aluno[i].data.mes = mesnovo;
+                aluno[i].data.ano = anonovo;
+
+                achou = 1;
+                break;
+              }
+            }
+          }
+
+          if (achou) {
+            printf("*aluno atualizado*\n");
+          } else {
+            printf("*matricula inexistente, não pode ser excluida*");
           }
 }
 
@@ -873,17 +782,117 @@ void listagemporsexoA(){
           }
 }
 
+void listagemporsexoP(){
+  printf("*listagem por sexo*\n");
+          printf("qual sexo voce quer listar?(m=masculino/f=feminino)\n");
+          scanf("%c", &escolhaS);
+          if (escolhaS == 'm') {
+            printf("*lista dos masculinos*\n");
+            for (int i = 0; i < quantP; i++) {
+              if (professor[i].sexo == escolhaS) {
+                printf("professor %d: %s\n", i + 1, professor[i].nome);
+              }
+            }
+          }
+          if (escolhaS == 'f') {
+            printf("*lista dos femininos*\n");
+            for (int i = 0; i < quantP; i++) {
+              if (professor[i].sexo == escolhaS) {
+                printf("professora %d: %s\n", i + 1, professor[i].nome);
+              }
+            }
+          }
+}
+
+void listagemnascimentoA(){
+  printf("*listagem de alunos por data de nascimento*\n");
+            for(int i=0;i<quantA-1;i++){
+              if(aluno[i].data.ano>aluno[i+1].data.ano){
+                copia=aluno[i];
+                aluno[i]=aluno[i+1];
+                aluno[i+1]=copia; 
+              }
+              else if(aluno[i].data.mes>aluno[i+1].data.mes){
+                      copia=aluno[i];
+                      aluno[i]=aluno[i+1];
+                      aluno[i+1]=copia; 
+              }
+              else if(aluno[i].data.dia>aluno[i+1].data.dia){
+                      copia=aluno[i];
+                      aluno[i]=aluno[i+1];
+                      aluno[i+1]=copia; 
+              }
+            }
+            for (int i = 0; i < quantA; i++) {
+              if (aluno[i].ativo) {
+                printf("matricula do aluno %d: %d\n", i + 1,
+                       aluno[i].matricula);
+                printf("nome do aluno %d: %s", i + 1, aluno[i].nome);
+                printf("cpf do aluno %d: %d\n", i + 1, aluno[i].cpf);
+                printf("sexo do aluno %d: %c\n", i + 1, aluno[i].sexo);
+                printf("data de nascimento do aluno %d: %d/%d/%d\n", i + 1,
+                       aluno[i].data.dia, aluno[i].data.mes, aluno[i].data.ano);
+                printf("\n");
+              }
+            }
+}
+
 void menuprof() {
   printf("*o que quer fazer nessa area?*\n");
   printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nver "
          "aniversariantes do mês - 5\nlistar por nome - 6\nlistar por sexo - "
-         "7\nbuscar aluno - 8\nvoltar - 0\n");
+         "7\nbuscar aluno - 8\nlistar por data de nascimento - 9\nvoltar - 0\n");
 }
 
 void menudisc() {
   printf("*o que quer fazer nessa area?*\n");
   printf("cadastrar - 1\nlistar - 2\natualizar - 3\nexcluir - 4\nmatricular "
          "alunos - 5\nmatricular professor - 6\nexcluir aluno da disciplina - 7\nexcluir professor da disciplina - 8\nlistar disciplinas com 40 vagas - 9\nvoltar - 0\n");
+}
+
+void cadastrardisciplinas(){
+  printf("*cadastrar disciplina*\n");
+          for (int i = 0; i < limiteD; i++) {
+
+            printf("digite o codigo da disciplina %d:\n", i + 1);
+            scanf("%d", &disc[i].code);
+            getchar();
+            printf("digite o nome da disciplina %d:\n", i + 1);
+            fgets(disc[i].nome, 20, stdin);
+            getchar();
+            printf("digite o semestre da disciplina %d:\n", i + 1);
+            scanf("%d",&disc[i].semestre);
+            getchar();
+            disc[i].ativo = 1;
+            disc[i].alunoscadastrados=0;
+            quantD++;
+          }
+}
+
+void listardisciplinas(){
+  printf("*listar disciplina*\n");
+          if (quantD == 0) {
+            printf("*sem disciplinas disponiveis*\n");
+          } else {
+            for (int i = 0; i < quantD; i++) {
+              if (disc[i].ativo) {
+                printf("codigo da disciplina %d: %d\n", i + 1, disc[i].code);
+                printf("nome da disciplina %d: %s\n", i + 1, disc[i].nome);
+                printf("semestre da disciplina %d: %d \n", i+1, disc[i].semestre);
+                for (int j = 0; j < disc[i].quantAD; j++) {
+                  if (disc[i].aluno[j].ativo != 0) {
+                    printf("aluno %d: %s\n", j + 1, disc[i].aluno[j].nome);
+                  }
+                }
+                for (int j = 0; j < disc[i].quantPD; j++) {
+                  if (disc[i].professor[j].ativo != 0) {
+                    printf("professor %d: %s\n", j + 1, disc[i].professor[j].nome);
+                  }
+                }
+                printf("\n");
+              }
+            }
+          }
 }
 
 void invalido() {
