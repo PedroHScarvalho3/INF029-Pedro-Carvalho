@@ -44,7 +44,7 @@ typedef struct Qtd
 int somar(int x, int y); //função utilizada para testes
 int fatorial(int x); //função utilizada para testes
 int q1(char data[]);
-int validarData(int dia, int mes, int ano);
+int validar(int dia, int mes, int ano);
 DiasMesesAnos q2(char datainicial[], char datafinal[]);
 int q3(char *texto, char c, int isCaseSensitive);
 int q4(char *strTexto, char *strBusca, int posicoes[30]);

@@ -81,21 +81,21 @@ DataQuebrada quebraData(char data[]){
   char sDia[3];
 	char sMes[3];
 	char sAno[5];
-	int i; 
+	int i;
+  int k;
 
 	for (i = 0; data[i] != '/'; i++){
 		sDia[i] = data[i];	
 	}
 	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
 		sDia[i] = '\0';  // coloca o barra zero no final
-    for(i=0;i<2;i++){
-    if((sDia[i]<'0')||(sDia[i]>'9')){
-      dq.valido=0;
-      return dq;
+    for(k=0;k<i;k++){
+      if((sDia[k]<'0')||(sDia[k]>'9')){
+        dq.valido=0;
+        return dq;
+      }
     }
-  }
-	}
-  else {
+	}else {
 		dq.valido = 0;
     return dq;
   }
@@ -114,14 +114,13 @@ DataQuebrada quebraData(char data[]){
 
 	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
 		sMes[i] = '\0';  // coloca o barra zero no final
-    for(i=0;i<2;i++){
-    if((sMes[i]<'0')||(sDia[i]>'9')){
-      dq.valido=0;
-      return dq;
+    for(k=0;k<i;k++){
+      if((sMes[k]<'0')||(sDia[k]>'9')){
+        dq.valido=0;
+        return dq;
+      }
     }
-  }
-	}
-  else {
+	}else {
 		dq.valido = 0;
     return dq;
   }
@@ -137,14 +136,13 @@ DataQuebrada quebraData(char data[]){
 
 	if(i == 2 || i == 4){ // testa se tem 2 ou 4 digitos
 		sAno[i] = '\0';  // coloca o barra zero no final
-    for(i=0;i<4;i++){
-    if((sAno[i]<'0')||(sDia[i]>'9')){
-      dq.valido=0;
-      return dq;
+    for(k=0;k<i;k++){
+      if((sAno[k]<'0')||(sDia[k]>'9')){
+        dq.valido=0;
+        return dq;
+      }
     }
-  }
-	}
-  else {
+	}else {
 		dq.valido = 0;
     return dq;
   }
@@ -184,27 +182,27 @@ int q1(char data[])
   DataQuebrada dataQuebrada = quebraData(data);
   
   
-  if (dataQuebrada.valido == 0)
+  if (dataQuebrada.valido == 0){
       return 0;
-  datavalida=Validar (dataQuebrada.iDia,dataQuebrada.iMes,dataQuebrada.iAno);
+  }
+  datavalida=validar(dataQuebrada.iDia,dataQuebrada.iMes,dataQuebrada.iAno);
   if(datavalida){
     return 1;
   }
-  else{
     return 0;
-  }
+  
 }
 
-int Validar (int dia, int mes, int ano){
+int validar (int dia, int mes, int ano){
   int MaxDias;
   int QuantDias;
-  if((dia<0)||(ano<0)||(mes<0)||(mes>13))
+  if((dia<0)||(ano<0)||(mes<0)||(mes>12))
     return 0;
   if(mes==2){
     if(((ano%4==0)&&(ano%100!=0))||(ano%400==0)){
-      MaxDias=29;
+      QuantDias=29;
     } else {
-      MaxDias=28;
+      QuantDias=28;
     }
   } else {
     switch (mes){
@@ -216,18 +214,22 @@ int Validar (int dia, int mes, int ano){
       case 10:
       case 12:
         QuantDias=31;
+        break;
       case 4:
       case 6:
       case 9:
       case 11:
         QuantDias=30;
+        break;
     }
-    MaxDias=QuantDias;
+   
   }
+   MaxDias=QuantDias;
+    printf("%d",MaxDias);
   if(dia>MaxDias){
     return 0;
   }
-  return 1
+  return 1;
 }
 
 
@@ -279,7 +281,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  @objetivo
     Pesquisar quantas vezes um determinado caracter ocorre em um texto
  @entrada
-    uma string texto, um caracter c e um inteiro que informa se é uma pesquisa Case Sensitive ou não. Se isCaseSensitive = 1, a pesquisa deve considerar diferenças entre maiúsculos e minúsculos.
+    uma string texto, um caracter c e um inteiro que informa se é uma pesquisa Case Sensitive ou não. Se isCaseSensitive = 1, a pesquisa deve considerar diferenças entre maiúsculos e minúsculos.0
         Se isCaseSensitive != 1, a pesquisa não deve  considerar diferenças entre maiúsculos e minúsculos.
  @saida
     Um número n >= 0.
