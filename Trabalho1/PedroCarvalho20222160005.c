@@ -288,10 +288,20 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
-
-    return qtdOcorrencias;
+  int qtdOcorrencias = 0;
+  for(int i=0;texto[i]!='\0';i++){
+    if(isCaseSensitive == 1){
+      if(c==texto[i])
+        qtdOcorrencias++;
+    }else{
+      if((c==texto[i])||(c+32==texto[i])||(c-32==texto[i]))
+        qtdOcorrencias++;
+    }
+  }
+  return qtdOcorrencias;
 }
+
+
 
 /*
  Q4 = encontrar palavra em texto
