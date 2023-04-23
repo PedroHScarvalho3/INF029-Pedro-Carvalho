@@ -355,6 +355,7 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
   int qtdOcorrencias = 0;
   int i,j,x,t,c,index=0,acento=0;
 
+  //retira acentos da frase
   for(i=0;strTexto[c]!='\0';c++){
     if(strTexto[c]==-61){
       for(i=c;strTexto[i]!='\0';i++){
@@ -362,7 +363,8 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
       }
     }
   }
-
+  
+  //retira acentos da busca
   for(i=0;strBusca[c]!='\0';c++){
     if(strBusca[c]==-61){
       for(i=c;strBusca[i]!='\0';i++){
