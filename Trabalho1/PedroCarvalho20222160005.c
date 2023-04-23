@@ -25,6 +25,7 @@
 #include "PedroCarvalho20222160005.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 /*
 ## função utilizada para testes  ##
 
@@ -257,28 +258,75 @@ int validar (int dia, int mes, int ano){
  */
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
+  
+  DiasMesesAnos dma;
 
-    //calcule os dados e armazene nas três variáveis a seguir
-    DiasMesesAnos dma;
+  if (q1(datainicial) == 0) {
+    dma.retorno = 2;
+    return dma;
+  } else if (q1(datafinal) == 0) {
+    dma.retorno = 3;
+    return dma;
+  } 
 
-    if (q1(datainicial) == 0){
-      dma.retorno = 2;
-      return dma;
-    }else if (q1(datafinal) == 0){
-      dma.retorno = 3;
-      return dma;
-    }else{
-      //verifique se a data final não é menor que a data inicial
-      
-      //calcule a distancia entre as datas
+  DataQuebrada dma1 = quebraData(datainicial);
+  DataQuebrada dma2 = quebraData(datafinal);
+  
+  if((dma1.iAno > dma2.iAno) || (dma1.iAno == dma2.iAno && dma1.iMes > dma2.iMes) ||(dma1.iAno == dma2.iAno && dma1.iMes == dma2.iMes && dma1.iDia > dma2.iDia)){
+    dma.retorno = 4;
+    return dma;
+  }else {
+    int mes = quantidadeDias(dma1.iMes, dma1.iAno);
+    dma.retorno = 1;
+    int data1 =  QuantDias(dma1.iMes, dma1.iAno) + dma1.iDia;
+    data1 += dma1.iAno * 365;
+    //data1 += QuantDias(dma1.iMes, dma1.iAno) == 29 ? 1:0;
+    int data2 =  QuantDias(dma2.iMes, dma2.iAno) + dma2.iDia;
+    data2 += dma2.iAno * 365;    
+    //data2 += QuantDias(dma2.iMes, dma2.iAno) == 29 ? 1:0;
+    int data = data2 - data1;
+    data +=  QuantDias(dma1.iMes, dma1.iAno) == QuantDias(dma2.iMes, dma2.iAno) ? 1:0;
+    dma.qtdAnos  = data/365;
+    data -=  dma.qtdAnos * 365;
+    dma.qtdMeses = data/mes;
+    dma.qtdDias = data%mes;
+    return dma;
+  }
+}
 
-
-      //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-      
+int quantidadeDias(int mes, int ano) {
+  switch (mes) {
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 8:
+    case 10:
+    case 12:
+      return 31;
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+      return 30;
+    case 2:{
+      if (((ano % 4 == 0) && (ano % 100 != 0)) || (ano % 400 == 0)) {
+        return 29;
+      } else {
+        return 28;
+      }
     }
-    
+  }
+}
+
+int QuantDias(int month, int ano){
+  int mes = 1;
+  int days = 0;
+  while(mes < month){
+    days+=quantidadeDias(mes, ano);
+    mes++;
+  }
+  return days;
 }
 
 /*
@@ -326,16 +374,47 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = 0;
-    int i,tam;
-    tam=strlen(strBusca);
-    
-    for(i=0;strTexto[i]!='\0';i++){
-      if(strBusca[0]==strTexto[i]){
-        
+  int qtdOcorrencias = 0;
+  int i,j,x,t,c,index=0,acento=0;
+
+  for(i=0;strTexto[c]!='\0';c++){
+    if(strTexto[c]==-61){
+      for(i=c;strTexto[i]!='\0';i++){
+        strTexto[i]=strTexto[i+1];
       }
     }
-    return qtdOcorrencias;
+  }
+
+  for(i=0;strBusca[c]!='\0';c++){
+    if(strBusca[c]==-61){
+      for(i=c;strBusca[i]!='\0';i++){
+        strBusca[i]=strBusca[i+1];
+      }
+    }
+  }
+
+  for(i=0;strTexto[i]!='\0';i++){
+    if(strBusca[0]==strTexto[i]){
+      for(j=i+1,x=1,t=1;strBusca[x]!='\0';j++,x++){
+        if(strBusca[x]==strTexto[j]){
+          t++;
+        }
+        else{
+          break;
+        }
+      }
+      if(strlen(strBusca)==t){
+        c=acento/2;
+        qtdOcorrencias++;
+        posicoes[index]=i+1;
+        index++;
+        posicoes[index]=i+t;
+        index++;
+        i++;
+      }
+    }
+  }
+  return qtdOcorrencias;
 }
 
 /*
@@ -350,9 +429,28 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
-    
-    return num;
+int n, numaux, base = 10;
+  int tam = quantcasas(num);
+  numaux = num;
+  num = 0;
+  for (int i = tam; i > 0; i--) {
+    n = numaux % base;
+    numaux /= base;
+    n *= pow(10, i - 1);
+    num += n;
+  }
+
+  return num;
 }
+
+int quantcasas(int num) {
+  int count = 1;
+  while (num / 10 != 0) {
+    count++;
+    num /= 10;
+  }
+  return count;
+};
 
 
 /*
@@ -367,6 +465,29 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
-    return qtdOcorrencias;
+  if (numerobusca > numerobase)
+    return 0;
+
+  int qtdOcorrencias = 0;
+
+  int numerobaseT = quantcasas(numerobase);
+  int numerobuscaT = quantcasas(numerobusca);
+
+  int base = pow(10, numerobaseT - numerobuscaT);
+  int t = pow(10, numerobaseT - 1);
+  int a = pow(10, numerobuscaT - 1);
+
+  int num = numerobase;
+
+  for (; base; base /= 10) {
+    int aux = num / base;
+    if (aux == numerobusca){
+      qtdOcorrencias++;
+      t /= a;
+      base /= a;
+    }
+    num %= t;
+    t /= 10;
+  }
+  return qtdOcorrencias;
 }
