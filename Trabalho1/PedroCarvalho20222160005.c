@@ -201,37 +201,18 @@ int q1(char data[])
 
 int validar (int dia, int mes, int ano){
   int MaxDias;
-  int QuantDias;
   if((dia<0)||(ano<0)||(mes<0)||(mes>12))
     return 0;
   if(mes==2){
     if(((ano%4==0)&&(ano%100!=0))||(ano%400==0)){
-      QuantDias=29;
+      MaxDias=29;
     } else {
-      QuantDias=28;
+      MaxDias=28;
     }
   } else {
-    switch (mes){
-      case 1:
-      case 3:
-      case 5:
-      case 7:
-      case 8:
-      case 10:
-      case 12:
-        QuantDias=31;
-        break;
-      case 4:
-      case 6:
-      case 9:
-      case 11:
-        QuantDias=30;
-        break;
-    }
+    MaxDias=quantidadeDias(mes, ano);
    
   }
-   MaxDias=QuantDias;
-    printf("%d",MaxDias);
   if(dia>MaxDias){
     return 0;
   }
