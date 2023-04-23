@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include "PedroCarvalho20222160005.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
+#include <string.h>
 /*
 ## função utilizada para testes  ##
 
@@ -133,7 +134,7 @@ DataQuebrada quebraData(char data[]){
 	 	sAno[i] = data[j];
 	 	i++;
 	}
-
+  
 	if(i == 2 || i == 4){ // testa se tem 2 ou 4 digitos
 		sAno[i] = '\0';  // coloca o barra zero no final
     for(k=0;k<i;k++){
@@ -150,6 +151,10 @@ DataQuebrada quebraData(char data[]){
   dq.iDia = atoi(sDia);
   dq.iMes = atoi(sMes);
   dq.iAno = atoi(sAno); 
+
+  if(i==2){
+    dq.iAno=dq.iAno+2000;
+  }
 
 	dq.valido = 1;
     
@@ -293,7 +298,8 @@ int q3(char *texto, char c, int isCaseSensitive)
     if(isCaseSensitive == 1){
       if(c==texto[i])
         qtdOcorrencias++;
-    }else{
+    }
+    else{
       if((c==texto[i])||(c+32==texto[i])||(c-32==texto[i]))
         qtdOcorrencias++;
     }
@@ -320,8 +326,15 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
-
+    int qtdOcorrencias = 0;
+    int i,tam;
+    tam=strlen(strBusca);
+    
+    for(i=0;strTexto[i]!='\0';i++){
+      if(strBusca[0]==strTexto[i]){
+        
+      }
+    }
     return qtdOcorrencias;
 }
 
@@ -337,9 +350,10 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
-
+    
     return num;
 }
+
 
 /*
  Q6 = ocorrência de um número em outro
