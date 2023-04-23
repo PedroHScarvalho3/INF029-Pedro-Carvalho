@@ -256,15 +256,14 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
   if((dma1.iAno > dma2.iAno) || (dma1.iAno == dma2.iAno && dma1.iMes > dma2.iMes) ||(dma1.iAno == dma2.iAno && dma1.iMes == dma2.iMes && dma1.iDia > dma2.iDia)){
     dma.retorno = 4;
     return dma;
-  }else {
+  }
+  else {
     int mes = quantidadeDias(dma1.iMes, dma1.iAno);
     dma.retorno = 1;
     int data1 =  QuantDias(dma1.iMes, dma1.iAno) + dma1.iDia;
     data1 += dma1.iAno * 365;
-    //data1 += QuantDias(dma1.iMes, dma1.iAno) == 29 ? 1:0;
     int data2 =  QuantDias(dma2.iMes, dma2.iAno) + dma2.iDia;
     data2 += dma2.iAno * 365;    
-    //data2 += QuantDias(dma2.iMes, dma2.iAno) == 29 ? 1:0;
     int data = data2 - data1;
     data +=  QuantDias(dma1.iMes, dma1.iAno) == QuantDias(dma2.iMes, dma2.iAno) ? 1:0;
     dma.qtdAnos  = data/365;
@@ -295,13 +294,17 @@ int quantidadeDias(int mes, int ano) {
 }
 
 int QuantDias(int month, int ano){
+  
   int mes = 1;
-  int days = 0;
+  int dias = 0;
+  
   while(mes < month){
-    days+=quantidadeDias(mes, ano);
+    
+    dias+=quantidadeDias(mes, ano);
     mes++;
   }
-  return days;
+  
+  return dias;
 }
 
 /*
@@ -404,13 +407,13 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
-int n, numaux, base = 10;
+int n, numaux;
   int tam = quantcasas(num);
   numaux = num;
   num = 0;
   for (int i = tam; i > 0; i--) {
-    n = numaux % base;
-    numaux /= base;
+    n = numaux % 10;
+    numaux /= 10;
     n *= pow(10, i - 1);
     num += n;
   }
