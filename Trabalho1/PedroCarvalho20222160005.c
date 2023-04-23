@@ -290,13 +290,7 @@ int quantidadeDias(int mes, int ano) {
     case 9:
     case 11:
       return 30;
-    case 2:{
-      if (((ano % 4 == 0) && (ano % 100 != 0)) || (ano % 400 == 0)) {
-        return 29;
-      } else {
-        return 28;
-      }
-    }
+    
   }
 }
 

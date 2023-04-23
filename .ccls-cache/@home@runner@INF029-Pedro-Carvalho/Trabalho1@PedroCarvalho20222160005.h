@@ -53,5 +53,6 @@ int q6(int numerobase, int numerobusca);
 DataQuebrada quebraData(char data[]);
 int quantcasas(int num);
 int quantidadeDias(int mes, int ano);
+int QuantDias(int month, int ano);
 
 #endif  // TRABALHO1_PRIMEIROULTIMONOMEMATRICULA_H

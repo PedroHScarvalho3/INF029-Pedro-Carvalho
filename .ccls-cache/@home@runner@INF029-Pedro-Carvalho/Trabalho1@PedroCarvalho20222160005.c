@@ -201,37 +201,18 @@ int q1(char data[])
 
 int validar (int dia, int mes, int ano){
   int MaxDias;
-  int QuantDias;
   if((dia<0)||(ano<0)||(mes<0)||(mes>12))
     return 0;
   if(mes==2){
     if(((ano%4==0)&&(ano%100!=0))||(ano%400==0)){
-      QuantDias=29;
+      MaxDias=29;
     } else {
-      QuantDias=28;
+      MaxDias=28;
     }
   } else {
-    switch (mes){
-      case 1:
-      case 3:
-      case 5:
-      case 7:
-      case 8:
-      case 10:
-      case 12:
-        QuantDias=31;
-        break;
-      case 4:
-      case 6:
-      case 9:
-      case 11:
-        QuantDias=30;
-        break;
-    }
+    MaxDias=quantidadeDias(mes, ano);
    
   }
-   MaxDias=QuantDias;
-    printf("%d",MaxDias);
   if(dia>MaxDias){
     return 0;
   }
@@ -258,43 +239,40 @@ int validar (int dia, int mes, int ano){
  */
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
+  
+  DiasMesesAnos dma;
 
-    //calcule os dados e armazene nas três variáveis a seguir
-    DiasMesesAnos dma;
+  if (q1(datainicial) == 0) {
+    dma.retorno = 2;
+    return dma;
+  } else if (q1(datafinal) == 0) {
+    dma.retorno = 3;
+    return dma;
+  } 
 
-    if (q1(datainicial) == 0){
-      dma.retorno = 2;
-      return dma;
-    }else if (q1(datafinal) == 0){
-      dma.retorno = 3;
-      return dma;
-    }
-
-    DataQuebrada dma1 = quebraData(datainicial);
-    DataQuebrada dma2 = quebraData(datafinal);
-
-    if((dma1.iAno > dma2.iAno) || (dma1.iAno == dma2.iAno && dma1.iMes > dma2.iMes) ||(dma1.iAno==dma2.iAno && dma1.iMes == dma2.iMes && dma1.iDia > dma2.iDia)){
-      dma.retorno = 4;
-      return dma;
-    }
-    else{
-      int mes = quantidadeDias(dma1.iMes, dma1.iAno);
-      dma.retorno = 1;
-
-
-    }
-      
-      //verifique se a data final não é menor que a data inicial
-      
-      //calcule a distancia entre as datas
-
-
-      //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-      
-    
-    
+  DataQuebrada dma1 = quebraData(datainicial);
+  DataQuebrada dma2 = quebraData(datafinal);
+  
+  if((dma1.iAno > dma2.iAno) || (dma1.iAno == dma2.iAno && dma1.iMes > dma2.iMes) ||(dma1.iAno == dma2.iAno && dma1.iMes == dma2.iMes && dma1.iDia > dma2.iDia)){
+    dma.retorno = 4;
+    return dma;
+  }else {
+    int mes = quantidadeDias(dma1.iMes, dma1.iAno);
+    dma.retorno = 1;
+    int data1 =  QuantDias(dma1.iMes, dma1.iAno) + dma1.iDia;
+    data1 += dma1.iAno * 365;
+    //data1 += QuantDias(dma1.iMes, dma1.iAno) == 29 ? 1:0;
+    int data2 =  QuantDias(dma2.iMes, dma2.iAno) + dma2.iDia;
+    data2 += dma2.iAno * 365;    
+    //data2 += QuantDias(dma2.iMes, dma2.iAno) == 29 ? 1:0;
+    int data = data2 - data1;
+    data +=  QuantDias(dma1.iMes, dma1.iAno) == QuantDias(dma2.iMes, dma2.iAno) ? 1:0;
+    dma.qtdAnos  = data/365;
+    data -=  dma.qtdAnos * 365;
+    dma.qtdMeses = data/mes;
+    dma.qtdDias = data%mes;
+    return dma;
+  }
 }
 
 int quantidadeDias(int mes, int ano) {
@@ -312,14 +290,18 @@ int quantidadeDias(int mes, int ano) {
     case 9:
     case 11:
       return 30;
-    case 2:{
-      if (((ano % 4 == 0) && (ano % 100 != 0)) || (ano % 400 == 0)) {
-        return 29;
-      } else {
-        return 28;
-      }
-    }
+    
   }
+}
+
+int QuantDias(int month, int ano){
+  int mes = 1;
+  int days = 0;
+  while(mes < month){
+    days+=quantidadeDias(mes, ano);
+    mes++;
+  }
+  return days;
 }
 
 /*
