@@ -294,26 +294,24 @@ Rertono (int)
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
     
-  if (vetorAux == NULL)
-    return SEM_ESPACO_DE_MEMORIA;
-
-  int retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
-  int posVet = 0;
-  int sucesso = 0;
-  for (int i=0;i<TAM;i++) {
-    if (vetorPrincipal[i].auxiliar != NULL && vetorPrincipal[i].qtdElement > 0 && vetorPrincipal[i].size > 0) {
-      for (int j = 0; j < vetorPrincipal[i].qtdElement; j++) {
-        vetorAux[posVet] = vetorPrincipal[i].auxiliar[j];
-        posVet++;
-      }
-      sucesso++;
-      retorno = SUCESSO;
-    }
-  }
-  if (sucesso == 0)
-    retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
-
-  return retorno;
+  int retorno = 0;
+		int contVetorAux	=	0;
+		int sucesso	=	0;
+		for(int i=0;	i	<	TAM; i++){
+			if(vetorPrincipal[i].auxiliar	!= NULL &&  vetorPrincipal[i].size >0 && vetorPrincipal[i].qtdElement > 0){
+				for(int j=0;	j	<	vetorPrincipal[i].qtdElement;j++){
+					vetorAux[contVetorAux]	=	vetorPrincipal[i].auxiliar[j];
+					contVetorAux++;
+				}
+				sucesso++;
+			}
+		}
+		if (sucesso	==	0){
+			retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+		}else{
+			retorno = SUCESSO;
+		}
+    return retorno;
 }
 
 /*
@@ -342,22 +340,22 @@ int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[])
     }
   } 
   if(posVet > 0)
-    insertionSort(vetorAux);
+    selectionsort (vetorAux, posVet);
   
   return retorno;
 }
 
-void insertionSort (int *vet) {
+void insertionSort (int *vetorAux) {
   int i, j, key;
-  int tamanho = (sizeof(*vet)/sizeof(int));
+  int tamanho = (sizeof(*vetorAux)/sizeof(int));
   for(i=0;i<tamanho;i++) {
     j=i+1;
-    key = vet[j];
-    while(j > 0 && vet[j-1] > key) {
-      vet[j] = vet[j-1];
+    key = vetorAux[j];
+    while(j > 0 && vetorAux[j-1] > key) {
+      vetorAux[j] = vetorAux[j-1];
       j--;
     }
-    vet[j] = key;
+    vetorAux[j] = key;
   }
 }
 
@@ -421,29 +419,20 @@ Retorno (int)
 int getQuantidadeElementosEstruturaAuxiliar(int posicao)
 {
 
-  int retorno = 0;
-  int p=posicao-1;
-
-  if(p<10 && p>=0){
-    if(vetorPrincipal[p].auxiliar != NULL && vetorPrincipal[p].size>0){
-      if(vetorPrincipal[p].qtdElement>0){
-        if(vetorPrincipal[p].size<vetorPrincipal[p].qtdElement){
-          vetorPrincipal[p].size=vetorPrincipal[p].qtdElement;
+  --posicao;
+  int retorno;
+  if(ehPosicaoValida(posicao) == SUCESSO) {
+      if(vetorPrincipal[posicao].auxiliar != NULL && vetorPrincipal[posicao].size > 0) {
+        if(vetorPrincipal[posicao].size < vetorPrincipal[posicao].qtdElement) {
+            vetorPrincipal[posicao].size = vetorPrincipal[posicao].qtdElement;
         }
-        return vetorPrincipal[p].qtdElement;
+        return vetorPrincipal[posicao].qtdElement;
+      } else {
+          retorno = ESTRUTURA_AUXILIAR_VAZIA;
       }
-      else{
-        retorno = ESTRUTURA_AUXILIAR_VAZIA;
-      }
-    }
-    else{
-      retorno = SEM_ESTRUTURA_AUXILIAR;
-    }
+  } else {
+      retorno = POSICAO_INVALIDA;
   }
-  else{
-    retorno=POSICAO_INVALIDA;
-  }
-
   return retorno;
 }
 
@@ -456,34 +445,34 @@ Retorno (No*)
 */
 No *montarListaEncadeadaComCabecote()
 {
-  int cont=0;
-  No *head = NULL;
+  int totalElementosAux = 0;
+	for(int i=0; i	< TAM ;i++){
+		totalElementosAux	+=	vetorPrincipal[i].qtdElement;
+	}
+	if (totalElementosAux ==	0){
+		return NULL;
+	}else {
+		No *inicio = (No*)	malloc (sizeof(No));
+		inicio->next = NULL;
 
-  for(int i = 0;i<TAM;i++){
-    cont+=vetorPrincipal[i].qtdElement;
-  }
-
-  if(cont!=0){
-    int *vetor = (int*) malloc(cont * sizeof(int));
-    if(vetor == NULL){
-      return NULL;
-    }
-    getDadosDeTodasEstruturasAuxiliares(vetor);
-    No *tail = NULL;
-    for(int d = 0; d < cont; d++){
-      No *novo = (No*)malloc(sizeof(No));
-      novo->next = NULL;
-      novo->number=vetor[d];
-      if(head == NULL){
-        head=novo;
-      } 
-      else{
-        tail->next=novo;
-      }
-      tail=novo;
-    }
-  }
-  return head;
+		int vetor[totalElementosAux]; 	
+	 	getDadosDeTodasEstruturasAuxiliares(vetor); 
+	for(int i = 0	; i	<	totalElementosAux	; i++)
+		{
+			No* novo = malloc(sizeof(No));
+			novo->number = vetor[i]; 
+			novo->next = NULL; 
+			if(inicio->next == NULL){
+				inicio->next = novo; 
+			}else{
+				No* atual = inicio;
+				while(atual->next != NULL) 
+					atual = atual->next;
+				atual->next = novo;
+			}
+		}
+	return inicio;
+	}
 }
 
 /*
@@ -492,14 +481,16 @@ Retorno void
 */
 void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
 {
-  No *numeroAtual = inicio;
-  int i = 0;
-
-  while(numeroAtual != NULL){
-    vetorAux[i]=numeroAtual->number;
-    i++;
-    numeroAtual=numeroAtual->next;
-  }
+  {
+	No* numeroAtual = inicio->next;
+	int i = 0;
+	while(numeroAtual->next != NULL){
+		vetorAux[i] = numeroAtual->number;
+		numeroAtual = numeroAtual->next;
+		i++;
+	}
+	vetorAux[i] = numeroAtual->number;
+}
 }
 
 /*
@@ -511,13 +502,16 @@ Retorno
 */
 void destruirListaEncadeadaComCabecote(No **inicio)
 {
-  No *ProximoAExcluir = *inicio, *getFree;
+  No* atual = *inicio;
 
-  while(ProximoAExcluir->next != NULL){
-    getFree = ProximoAExcluir;
-    free(getFree);
-    ProximoAExcluir = ProximoAExcluir->next;
-  }
+	while(atual->next != NULL){
+		No* tmp = (No*)malloc (sizeof(No));
+		tmp = atual->next;
+		free(atual);
+		atual = tmp;
+	}
+
+	*inicio = NULL;
 }
 
 /*

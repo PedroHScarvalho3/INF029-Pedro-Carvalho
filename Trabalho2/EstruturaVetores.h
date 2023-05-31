@@ -41,6 +41,7 @@ void selectionsort (int vetor[], int tamVetor);
 void insertionSort (int *vetorAux);
 
 
+
 void inicializar();
 void finalizar();
 void dobrar(int *x);
