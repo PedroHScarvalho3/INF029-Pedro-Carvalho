@@ -10,8 +10,8 @@ enum { TODAS_ESTRUTURAS_AUXILIARES_VAZIAS = -11, NOVO_TAMANHO_INVALIDO, NUMERO_I
        JA_TEM_ESTRUTURA_AUXILIAR, SEM_ESTRUTURA_AUXILIAR, SEM_ESPACO, SUCESSO };
 
 typedef struct reg {
-    int conteudo;
-    struct reg *prox;
+    int number;
+    struct reg *next;
 } No;
 
 typedef struct principal{
@@ -20,6 +20,8 @@ typedef struct principal{
      int size;
      
   }array;
+
+
 
 
 int criarEstruturaAuxiliar(int posicao, int tamanho);
@@ -32,11 +34,11 @@ int getDadosDeTodasEstruturasAuxiliares(int vetorAux[]);
 int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[]);
 int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho);
 int getQuantidadeElementosEstruturaAuxiliar(int posicao);
-void insertionSort(int vetorAux[], int tamanho);
 No *montarListaEncadeadaComCabecote();
 void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[]);
 void destruirListaEncadeadaComCabecote(No **inicio);
 void selectionsort (int vetor[], int tamVetor);
+void insertionSort (int *vetorAux);
 
 
 void inicializar();

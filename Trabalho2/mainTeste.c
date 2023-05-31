@@ -31,8 +31,10 @@ int main()
     testeListar();
   printf("teste retornar todos numeros\n");
     testeRetornarTodosNumeros();
-    //testeMudarTamanhoEstrutura();
-    //testeListaEncadeada();
+  printf("teste mudar tamanho estrutura\n");
+    testeMudarTamanhoEstrutura();
+  printf("teste listar");
+    testeListaEncadeada();
     finalizar();
 }
 int ligado = 0;
@@ -152,7 +154,7 @@ void testeRetornarTodosNumeros()
 {
     show_log("testeRetornarTodosNumeros()");
     int vet1[2];
-  
+    printf("ver1");
     printf("%d\n", getDadosDeTodasEstruturasAuxiliares(vet1) == TODAS_ESTRUTURAS_AUXILIARES_VAZIAS);
   printf("getDadosALLordenados\n");
     printf("%d\n", getDadosOrdenadosDeTodasEstruturasAuxiliares(vet1) == TODAS_ESTRUTURAS_AUXILIARES_VAZIAS);
