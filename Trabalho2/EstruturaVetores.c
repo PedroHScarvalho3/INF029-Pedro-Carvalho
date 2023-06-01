@@ -538,5 +538,6 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 void finalizar()
 {
-  
+  for(int i=0;i<TAM;i++){
+    free (vetorPrincipal[i].auxiliar);}
   }
